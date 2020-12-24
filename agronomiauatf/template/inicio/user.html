@@ -32,21 +32,25 @@
                 </form>
             {% else %} 
                 {% if object.is_staff %}
-                <form method="POST" action="show-status-user/{{object.id}}" role="form" class="form-horizontal" id="demo-form2" data-parsley-validate>{% csrf_token %}
-                    <input type='checkbox' value="0" name='option' id='staff' required/>
-                    <button type="submit">Anular cuenta</button>
-                </form>
+                <div class="form-group">
+                    <form method="POST" action="show-status-user/{{object.id}}" role="form" class="form-horizontal" id="demo-form2" data-parsley-validate>{% csrf_token %}
+                        <input type='checkbox' value="0" name='option' id='staff' required/>
+                        <button type="submit">Anular cuenta</button>
+                    </form>
+                </div>
                 {% endif %}
-            {% endif %}
+            {% endif %}<br>
             {% if object.is_active %}
+            <div class="form-group">
                 <form method="POST" action="show-status-user/{{object.id}}" role="form" class="form-horizontal" id="demo-form2" data-parsley-validate>{% csrf_token %}
-                    <select name="option" required>
+                    <select name="option" class="form-control" required>
                         <option value="n"> Eliga una opción</option>
                         <option value="super">Habilitar como super usuario</option>
                         <option value="user">Habilitar como usuario</option>
                     </select>
-                    <button type="submit">Habilitar cuenta</button>
-                </form>   
+                    <button type="submit" class="btn btn-info mx">Habilitar cuenta</button>
+                </form>
+            </div>  
             {% endif %}
         </td></tr>
     </table>

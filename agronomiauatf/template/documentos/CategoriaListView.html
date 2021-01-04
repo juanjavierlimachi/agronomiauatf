@@ -1,0 +1,44 @@
+<div class="table-responsive">
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#staticBackdrop" onclick="getUrl('{% url 'category' %}','REGISTRAR NUEVA CATEGORIA')">
+          <span class="">
+  			Registrar Categoria
+          </span>
+    </button>
+	<h5 colspan="6" align="center"><strong>LISTA DE CATEGORIAS REGISTRADOS EN EL SISTEMA</strong></h5>
+    <table class="table table-hover table-striped table-responsive datatable thead-light table-sm" id="table-ingresos">
+    <thead  class="success">
+        <th style="width: 3%;">Nro</th>
+        <th>NOMBRE</th>
+        <th>FECHA DE REGISTRO</th>
+    </thead>
+    {% for i in object_list %}
+        {% if i.estado %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.Nombre_categoria}}</td>
+                <td>{{i.Fecha_creacion|date:"l d M Y"}}</td>
+                <td>
+                    <button href="#" class="btn btn-success btn-sm" onclick="getUrl('show-categoria/{{i.id}}','Editar Categoria');" title="Opciones" data-toggle="modal" data-target="#staticBackdrop">Editar</button>
+                    <button href="#" class="btn btn-danger btn-sm" onclick="getUrl('delete-categoria/{{i.id}}','Eliminar Categoria');" title="Opciones" data-toggle="modal" data-target="#staticBackdrop">Eliminar</button>
+                </td>
+            </tr>
+        {% endif %}
+    {% empty %}
+
+        <tr> <td colspan="6" align="center"><strong>No se encontró registros</strong></td> </tr>
+    {% endfor %}
+    </table>
+</div>
+<script type="text/javascript">
+	function getUrl(route,title){
+		$(".modal .modal-title").text(title);
+        $.ajax({
+          type:'GET',
+          url:route,
+          success:function(resp){
+            $(".modal .modal-body").html(resp);
+          }
+        });
+      }
+      
+</script>

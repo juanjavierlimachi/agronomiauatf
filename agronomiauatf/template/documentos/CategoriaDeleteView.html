@@ -1,0 +1,35 @@
+<script type="text/javascript">
+    $('.container #demo-form2').submit(function(e){
+           e.preventDefault();
+           $.ajax({
+               type:'POST',
+               url: $(this).attr("action"),
+               data: $(this).serialize(),
+               success: function(resp){
+                if(resp == '200'){
+                    $(".toast .alert-success").html("La categoria se dió de baja correctamente");
+                    $('.toast').toast({delay: 3000});
+                    $('.toast').toast('show');
+                    callData('/list-category');
+                    $(".modal .close").click();
+                }
+                else{
+                    $(".modal-body").html(resp);
+                }  
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+              alert("Error al enviar intente nuevamente gracias");
+            }
+           });
+       });
+   </script>
+<div class="container">
+    <form method="POST" action="delete-categoria/{{object.pk}}" role="form" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" >
+        {% csrf_token %}
+            Esta seguro de eliminar la categoria? <strong>{{object.Nombre_categoria}} </strong>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">Confirmar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </div>
+      </form>
+</div>

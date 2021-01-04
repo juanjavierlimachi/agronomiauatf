@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop" onclick="gestiosUsuarios('/registerNewUser','REGISTRAR NUEVO USUARIO')">
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#staticBackdrop" onclick="gestiosUsuarios('/registerNewUser','REGISTRAR NUEVO USUARIO')">
           <span class="">
   			Registrar Usuario
           </span>
@@ -24,7 +24,7 @@
                 {{forloop.counter}}       	
                 </td>
                 <td>{{i.username}}</td>
-                <td>{{i.get_full_name|upper}}</td>
+                <td>{{i.get_full_name|title}}</td>
                 <td>{{i.email}}</td>
                 <td>{{i.date_joined|date:"l d M Y"}}</td>
                 {% if user.is_superuser %}

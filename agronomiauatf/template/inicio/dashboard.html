@@ -34,7 +34,7 @@
                 {% endverbatim %} -->
                 <p>Usuario: {{request.user}}</p>
                 <li>
-                    <a href="/dashboard">Inicio</a>
+                    <a href="{% url 'dashboard' %}">Inicio</a>
                 </li>
                 <li>
                     <a href="" onclick="callData('{% url 'users' %}')">Usuarios</a>
@@ -54,10 +54,10 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#">Portfolio</a>
+                    <a href="" onclick="callData('{% url 'list-category' %}')">Categorias</a>
                 </li>
                 <li>
-                    <a href="#">Contact</a>
+                    <a href="#">Documentos</a>
                 </li>
             </ul>
         </nav>
@@ -68,13 +68,13 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
 
-                    <button type="button" id="sidebarCollapse" class="btn btn-info" ng-click="cm.statusMenu()">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info btn-sm" ng-click="cm.statusMenu()">
                         <i class="fas fa-align-left"></i>
                         <span ng-if="!cm.togleMenu">Ocultar Menú</span>
                         <span ng-if="cm.togleMenu">Mostar Menú</span>
                     </button>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                          Mi Perfil
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">

@@ -8,7 +8,7 @@
             data: $(this).serialize(),
             success: function(resp){
                 if(resp == '200'){
-                    $(".toast .alert-success").html("Los datos se registraron correctamente...!");
+                    $(".toast .alert-success").html("Los datos se registraron correctamente!");
                     $('.toast').toast({delay: 3000});
                     $('.toast').toast('show');
                     callData('/list-category');

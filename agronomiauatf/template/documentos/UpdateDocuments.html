@@ -1,0 +1,39 @@
+{% load bootstrap4 %}
+<script type="text/javascript">
+ $('#demo-form2').submit(function(e){
+        e.preventDefault();
+        var datos=new FormData(this);
+        $.ajax({
+            type:'POST',
+            url:$(this).attr("action"),
+            data: datos,
+            contentType: false,
+            processData: false,
+            success: function(resp){
+                if(resp != ''){
+                    $(".toast .alert-success").html("Los datos se actualizo correctamente");
+                    $('.toast').toast({delay: 3000});
+                    $('.toast').toast('show');
+                    callData('/detail-documents/{{dato.id}}');
+                    $(".modal .close").click();
+                }
+                else{
+                    $(".modal-body").html(resp);
+                }  
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+              alert("Error al enviar intente nuevamente gracias");
+            }
+        });
+    });
+</script>
+ <form method="POST" action="update-documents/{{dato.id}}" role="form" id="demo-form2" data-parsley-validate enctype="multipart/form-data" class="form-horizontal form-label-left" >
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Editar</button>
+            <button type="button" class="btn btn-secondary btn-ms" data-dismiss="modal">Cancelar</button>
+        </div>
+    {% endbuttons %}
+  </form>

@@ -15,3 +15,13 @@ class CategoriaForm(forms.ModelForm):
         model = Categoria
         #fields = ('Nombre_categoria','estado',)
         exclude=('estado',)
+
+class DocumentoForm(forms.ModelForm):
+    """Form definition for DocumentoForm."""
+
+    class Meta:
+        """Meta definition for DocumentoForm."""
+
+        model = Documento
+        #fields = ('Titulo',)
+        exclude=('Usuario','estado',)

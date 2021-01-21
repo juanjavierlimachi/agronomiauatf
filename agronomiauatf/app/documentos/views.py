@@ -107,3 +107,10 @@ class DeleteDocuments(DeleteView):
         get_data.estado = False 
         get_data.save()
         return HttpResponse('200')
+    
+def CountDoumload(request, pk):
+    get_data = Documento.objects.get(id = int(pk))
+    get_data.Descargas = int(get_data.Descargas) + 1
+    get_data.save()
+    return HttpResponse(get_data.Descargas)
+        

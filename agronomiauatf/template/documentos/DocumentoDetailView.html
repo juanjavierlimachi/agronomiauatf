@@ -10,7 +10,10 @@
 			<a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#" role="tab" aria-controls="pills-profile" aria-selected="false" data-toggle="modal" data-target="#staticBackdrop" onclick="getUrl('delete-documents/{{object.id}}','ELIMINAR DOCUMENTO')" data-target="#exampleModal">Eliminar</a>
 			</li>
 			<li class="nav-item" role="presentation">
-			<a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" href="#" role="tab" aria-controls="pills-contact" aria-selected="false">Más</a>
+			<a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" href="#" role="tab" aria-controls="pills-contact" aria-selected="false">Comentar</a>
+			</li>
+			<li class="nav-item" role="presentation">
+				<a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" href="#" role="tab" aria-controls="pills-contact" aria-selected="false">Compartir</a>
 			</li>
 		</ul>
 		{% endif %}
@@ -19,26 +22,29 @@
 	
 	<div class="card mb-3" style="max-width: 1040px;">
 		<div class="row g-0">
-		  <div class="col-md-4">
-			<img src="..." alt="...">
-		  </div>
+		<div class="col-md-4">
+			<!-- <img src="..." alt="..."> -->
+			<iframe src="http://docs.google.com/gview?url=http://127.0.0.1:8000/media/{{object.Archivo}}&embedded=true" style="width:100%; height:400px;" frameborder="0" ></iframe>
+		</div>
 		  <div class="col-md-8">
 			<div class="card-body">
 			  <h5 class="card-title">{{object.Titulo|upper}}</h5>
 				<p class="card-text"><strong>REGISTRADO POR:</strong> {{object.Usuario.get_full_name|title}}<br>
 					<strong>CATEGORIA:</strong> {{object.Categoria|title}}<br>
-					<strong>REGISTRADO POR:</strong> {{object.Usuario.get_full_name|title}}
 				</p>
 				<p class="card-text">
 					<small class="text-muted">
-						<strong>Ultima modificación: </strong>{{object.Fecha_mod|date:"l d M Y"}}<br>
+						<strong>Ultima Modificación: </strong>{{object.Fecha_mod|date:"l d M Y"}}<br>
 						<strong>Fecha de Registro: </strong>{{object.Fecha_creacion|date:"l d M Y"}}<br>
 						<strong>Documento: </strong>
 						{% if object.Privado %}
 							Privado
-						 {% elif object.público %}
-							 Publico
+						 {% else %}
+						 	Público
 						{% endif %}
+						<br>Cantidad de Descargas: <span id="des">{{object.Descargas}}</span><strong>
+							<a href="http://127.0.0.1:8000/media/{{object.Archivo}}" onclick="Descargar('countDoumload/{{object.id}}');" download="{{object.Archivo}}">Descargar</a>
+						</strong>
 					</small>
 				</p>
 			</div>
@@ -61,6 +67,15 @@
             url:route,
             success:function(resp){
                 $(".modal .modal-body").html(resp);  
+            }
+        });
+	}
+	function Descargar(urls) {
+		$.ajax({
+            type:'GET',
+            url:urls,
+            success:function(resp){
+                $(".card-text #des").html(resp);  
             }
         });
 	}	

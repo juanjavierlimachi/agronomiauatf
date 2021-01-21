@@ -13,4 +13,6 @@ urlpatterns = [
     path('detail-documents/<int:pk>', views.DetailDocuments.as_view(), name='detail-documents'),
     path('update-documents/<int:id>', views.UpdateDocuments, name='update-documents'),
     path('delete-documents/<int:pk>', views.DeleteDocuments.as_view(), name='deleteDocuments'),
+    
+    path('countDoumload/<int:pk>', views.CountDoumload, name='count-dounload'),
 ]

@@ -29,11 +29,13 @@ class Documento(models.Model):
     Categoria = models.ForeignKey(Categoria, on_delete = models.CASCADE)
     Archivo = models.FileField('Archivo', upload_to='archivos', max_length=100, help_text="Adjunte el archivo a guardar")
     Usuario = models.ForeignKey(User, on_delete = models.CASCADE)
-    Privado = models.BooleanField('Privado',help_text="El documento es oculto para todos los usuarios ", default = False)
-    público = models.BooleanField('Público',help_text="El documento es Público para todos los usuarios", default = False)
+    Privado = models.BooleanField('Privado',help_text="El documento es oculto para los usuarios ", default = False)
+    
     Fecha_creacion = models.DateTimeField(auto_now_add=True)
     Fecha_mod = models.DateTimeField(auto_now=True)
     estado = models.BooleanField(default = True)
+    
+    Descargas = models.IntegerField(default = 0)
     # TODO: Define fields here
 
     class Meta:

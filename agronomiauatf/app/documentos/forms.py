@@ -24,4 +24,4 @@ class DocumentoForm(forms.ModelForm):
 
         model = Documento
         #fields = ('Titulo',)
-        exclude=('Usuario','estado',)
+        exclude=('Usuario','estado','Descargas',)

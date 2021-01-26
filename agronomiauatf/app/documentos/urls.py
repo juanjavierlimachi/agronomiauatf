@@ -15,4 +15,8 @@ urlpatterns = [
     path('delete-documents/<int:pk>', views.DeleteDocuments.as_view(), name='deleteDocuments'),
     
     path('countDoumload/<int:pk>', views.CountDoumload, name='count-dounload'),
+    path('sharedFile/<int:pk>', views.sharedFile, name='sharedFiles'),
+    path('list-compartidos/<int:id_document>', views.ListCompartidos.as_view(), name='listCompartidos'),
+    path('comentsFile/<int:id_document>', views.CreateComents, name='new-coments'),
+    path('list-comentarios/<int:id_document>', views.ListComentarios.as_view(), name='list-comentarios'),
 ]

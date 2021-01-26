@@ -32,6 +32,7 @@
                 </form>
             {% else %} 
                 {% if object.is_staff %}
+                Cambiar de rol:
                 <div class="form-group">
                     <form method="POST" action="show-status-user/{{object.id}}" role="form" class="form-horizontal" id="demo-form2" data-parsley-validate>{% csrf_token %}
                         <input type='checkbox' value="0" name='option' id='staff' required/>
@@ -45,7 +46,7 @@
                 <form method="POST" action="show-status-user/{{object.id}}" role="form" class="form-horizontal" id="demo-form2" data-parsley-validate>{% csrf_token %}
                     <select name="option" class="form-control" required>
                         <option value="n"> Eliga una opción</option>
-                        <option value="super">Habilitar como super usuario</option>
+                        <option value="super">Habilitar como Administrador</option>
                         <option value="user">Habilitar como usuario</option>
                     </select>
                     <button type="submit" class="btn btn-info mx">Habilitar cuenta</button>

@@ -25,3 +25,21 @@ class DocumentoForm(forms.ModelForm):
         model = Documento
         #fields = ('Titulo',)
         exclude=('Usuario','estado','Descargas',)
+
+class ComentForm(forms.ModelForm):
+    """FORMNAME definition."""
+    class Meta:
+        model = Comentar
+        exclude=('estado','Usuario','documento',)
+
+
+class CompartirForm(forms.ModelForm):
+    """Form definition for CompartirForm."""
+
+    class Meta:
+        """Meta definition for CompartirFormform."""
+
+        model = Compartir
+        exclude = ('estado','Usuario','documento','Correo_origen',)
+
+        

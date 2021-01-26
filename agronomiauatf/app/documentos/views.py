@@ -78,6 +78,15 @@ def shearDocuments(request):
 class DetailDocuments(DetailView):
     model = Documento
     template_name = "documentos/DocumentoDetailView.html"
+    
+    def get(self, request, *args, **kwargs):
+        print(kwargs)
+        self.dic = {
+            'coments':Comentar.objects.filter(documento_id = int(kwargs['pk'])).order_by('-id'),
+            'object':Documento.objects.get(id = int(kwargs['pk']))
+            #'usuarios':self.model.objects.all().count()
+        }
+        return render(request,self.template_name, self.dic)
 
 
 ''' class UpdateDocuments(UpdateView):
@@ -113,4 +122,78 @@ def CountDoumload(request, pk):
     get_data.Descargas = int(get_data.Descargas) + 1
     get_data.save()
     return HttpResponse(get_data.Descargas)
+
+from smtplib import SMTP
+from django.core.mail import EmailMessage
+from django.conf import settings
+def sharedFile(request, pk):
+    Usuario=Compartir(Usuario=request.user)
+    if request.method == 'POST':
+        forms=CompartirForm(request.POST,instance=Usuario)
+        if forms.is_valid():
+            datos = forms.save(commit=False)
+            datos.Correo_origen = settings.EMAIL_HOST_USER
+            datos.Correo_Destino = request.POST['Correo_Destino']
+            datos.documento_id = int(pk)
+            
+            #a  = request.FILES["Archivo"]
+            
+            ''' email = EmailMessage(
+            request.POST['Asunto'],
+            request.POST['Descripcion'],
+            settings.EMAIL_HOST_USER,
+            [request.POST['Correo_Destino']],
+            ) '''
+            #email.attach(a.name, a.read(), a.content_type)
+            #a.close()
+            ''' email.send() '''
+            datos.save()
+            
+            return HttpResponse("200")
+    else:
+        forms=CompartirForm(instance=Usuario)
+    return render(request,'documentos/sharedFile.html',{'form':forms,'pk':pk})
+
+def CreateComents(request, id_document):
+    Usuario=Comentar(Usuario=request.user)
+    if request.method == 'POST':
+        forms=ComentForm(request.POST,instance=Usuario)
+        if forms.is_valid():
+            datos = forms.save(commit=False)
+            datos.documento_id = int(id_document)
+            
+            datos.save()
+            return HttpResponse("200")
+    else:
+        forms=ComentForm(instance=Usuario)
+    return render(request,'documentos/CreateComents.html',{'form':forms,'id_document':id_document})
+
+
+class ListCompartidos(ListView):
+        model = Compartir
+        template_name = "documentos/ListCompartidos.html"
+        ''' 
+            method to attach data in context
+            def get_context_data(self, **kwargs): 
+            context = super(ListCompartidos, self).get_context_data(**kwargs)
+            context['object_list'] = self.model.objects.filter(estado=True)
+            print(kwargs)
+            return context '''
+        
+        def get(self, request, *args, **kwargs):
+            self.dic = {
+                'object_list':self.model.objects.filter(documento_id = int(kwargs['id_document'])).order_by('-id')
+                #'usuarios':self.model.objects.all().count()
+            }
+            return render(request,self.template_name, self.dic)
+        
+class ListComentarios(ListView):
+    model = Comentar
+    template_name = "documentos/ListComentarios.html"
+    def get(self, request, *args, **kwargs):
+        self.dic = {
+            'object_list':self.model.objects.filter(documento_id = int(kwargs['id_document'])).order_by('-id')
+            #'usuarios':self.model.objects.all().count()
+        }
+        return render(request,self.template_name, self.dic)
         

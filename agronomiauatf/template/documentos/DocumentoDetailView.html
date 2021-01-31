@@ -4,22 +4,22 @@
 		{% if user.is_superuser %}
 		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 			<li class="nav-item" role="presentation">
-			<a class="nav-link" id="pills-home-tab" data-bs-toggle="pill" href="#" role="tab" 
+			<a class="nav-link" id="editar" data-bs-toggle="pill" href="#" role="tab" 
 				aria-controls="pills-home" aria-selected="false" data-toggle="modal" 
 				data-target="#staticBackdrop" onclick="getUrl('update-documents/{{object.id}}','REGITRAR DOCUMENTO')" data-target="#exampleModal">Editar</a>
 			</li>
-			<li class="nav-item" role="presentation">
-			<a class="nav-link" id="pills-profile-tab" 
+			<li class="nav-item1" role="presentation">
+			<a class="nav-link" id="eliminar" 
 				data-bs-toggle="pill" href="#" role="tab" 
 				aria-controls="pills-profile" aria-selected="false" data-toggle="modal" data-target="#staticBackdrop" onclick="getUrl('delete-documents/{{object.id}}','ELIMINAR DOCUMENTO')" data-target="#exampleModal">Eliminar</a>
 			</li>
-			<li class="nav-item" role="presentation">
-			<a class="nav-link" id="pills-contact-tab" data-target="#staticBackdrop" data-toggle="modal" data-target="#exampleModal"
+			<li class="nav-item2" role="presentation">
+			<a class="nav-link" id="comentar" data-target="#staticBackdrop" data-toggle="modal" data-target="#exampleModal"
 				onclick="getUrl('comentsFile/{{object.id}}','COMENTAR DOCUMENTO')" data-bs-toggle="pill" href="#" role="tab" 
 				aria-controls="pills-contact" aria-selected="false">Comentar</a>
 			</li>
-			<li class="nav-item" role="presentation">
-				<a class="nav-link" id="pills-contact-tab" data-toggle="modal" data-target="#staticBackdrop" data-target="#exampleModal"
+			<li class="nav-item3" role="presentation">
+				<a class="nav-link" id="compartir" data-toggle="modal" data-target="#staticBackdrop" data-target="#exampleModal"
 					onclick="getUrl('sharedFile/{{object.id}}','COMPARTIR DOCUMENTO')" data-bs-toggle="pill" href="#" role="tab" 
 					aria-controls="pills-contact" aria-selected="false">Compartir</a>
 			</li>
@@ -27,14 +27,14 @@
 		{% endif %}
 	</div>
 	
-	
+	{% load static %}
 	<div class="card mb-3" style="max-width: 1040px;">
 		<div class="row g-0">
 		<div class="col-md-4">
-				<img src="..." alt="...">
+				<img src="{% static 'img/file.png' %}" alt="...">
 				<strong>
 					{% if user.is_superuser %}
-						<a href="http://127.0.0.1:8000/media/{{object.Archivo}}" onclick="Descargar('countDoumload/{{object.id}}');" download="{{object.Archivo}}">Descargar</a>
+						<a href="media/{{object.Archivo}} " onclick="Descargar('countDoumload/{{object.id}}');" download="{{object.Archivo}}">Descargar</a>
 					{% endif %}
 				</strong>
 <!-- 			<iframe src="http://docs.google.com/viewer?url=http://127.0.0.1:8000/media/{{object.Archivo}}&embedded=true" style="width:100%; height:400px;" frameborder="0" ></iframe>
@@ -65,11 +65,11 @@
 	  <div class="btn-group">
 		{% if user.is_superuser %}
 		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-			<li class="nav-item" role="presentation">
-			<a class="nav-link" id="pills-home-tab" data-bs-toggle="pill" href="#compartidos" role="tab" 
+			<li class="nav-item4" role="presentation">
+			<a class="nav-link" id="pills-home-tab" data-bs-toggle="pill" href="#comentarios" role="tab" 
 				aria-controls="pills-home" aria-selected="false" onclick="compartir('list-comentarios/{{object.id}}')">Ver Comentarios</a>
 			</li>
-			<li class="nav-item" role="presentation">
+			<li class="nav-item5" role="presentation">
 			<a class="nav-link" id="pills-profile-tab" 
 				data-bs-toggle="pill" href="#compartidos" role="tab" 
 				aria-controls="pills-profile" aria-selected="false" onclick="compartir('list-compartidos/{{object.id}}')" >Ver Compartidos</a>
@@ -99,10 +99,19 @@
 						<td>{{i.Descripcion}}</td>
 						<td>{{i.Fecha_creacion|date:"l d M Y"}}</td>
 						
-						<td>
-							<button href="#" class="btn btn-success btn-sm" onclick="getUrl('edit-coment/{{i.id}}','Editar Comentorio');" title="Opciones" data-toggle="modal" data-target="#staticBackdrop">Editar</button>
-							<button href="#" class="btn btn-danger btn-sm" onclick="getUrl('delete-coment/{{i.id}}','Eliminar Comentario');" title="Opciones" data-toggle="modal" data-target="#staticBackdrop">Eliminar</button>
-						</td>
+						
+						{% if i.Usuario.id == request.user.id %}
+							<td>
+								<button href="#" class="btn btn-success btn-sm" onclick="getUrl('edit-coment/{{i.id}}/{{i.documento.id}}','Editar Comentario');" title="Opciones" data-toggle="modal" data-target="#staticBackdrop">Editar</button>
+								<button href="#" class="btn btn-danger btn-sm" onclick="getUrl('delete-coment/{{i.id}}/{{i.documento.id}}','Eliminar Comentario');" title="Opciones" data-toggle="modal" data-target="#staticBackdrop">Eliminar</button>
+							</td>
+						{% else %}
+							<td>
+								
+							</td>
+						{% endif %}
+							
+						
 					</tr>
 					{% endif %}
 				{% empty %}
@@ -117,10 +126,8 @@
 	
 	
 	function getUrl(route,title){
-		$(this).addClass('nav-link active');
-		//let activar = $('.btn-group ul li a').attr("id");
-		//alert(activar)
-		//$('.btn-group ul li #'+activar).removeClass('nav-link').addClass('nav-link active');
+		//$(this).addClass('active');
+		alert($(this).attr('id'));
 		$(".modal-title").text(title);
         $.ajax({
             type:'GET',

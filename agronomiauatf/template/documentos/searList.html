@@ -1,0 +1,26 @@
+<table class="display dataTable table table-hover table-responsive table-sm size-text" id="example">
+    <thead  class="success">
+        <th style="width: 3%;">Nro</th>
+        <th>TÍTULO</th>
+        <th>CATEGORIA</th>
+        <th>FECHA DE REGISTRO</th>
+        <th></th>
+    </thead>
+    <tbody>
+        {% for i in object_list %}
+            {% if i.estado %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.Titulo}}</td>
+                    <td>{{i.Categoria|title}}</td>
+                    <td>{{i.Fecha_creacion|date:"l d M Y"}}</td>
+                    <td>
+                        <button href="#" class="btn btn-info btn-sm" onclick="getUrls('detail-documents/{{i.id}}');" title="Opciones">Detalle</button>
+                    </td>
+                </tr>
+            {% endif %}
+        {% empty %}
+                <tr> <td colspan="6" align="center"><strong>No se encontró registros</strong></td> </tr>
+        {% endfor %}
+    </tbody>
+</table>

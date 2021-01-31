@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    $('.container #demo-form2').submit(function(e){
+           e.preventDefault();
+           $.ajax({
+               type:'POST',
+               url: $(this).attr("action"),
+               data: $(this).serialize(),
+               success: function(resp){
+                if(resp == '200'){
+                    $(".toast .alert-success").html("El comentario se dió de baja correctamente");
+                    $('.toast').toast({delay: 3000});
+                    $('.toast').toast('show');
+                    compartir('list-comentarios/{{object.documento.id}}');
+                    //$(this).closest("tr").remove();
+                    $(".modal .close").click();
+                }
+                else{
+                    $(".modal-body").html(resp);
+                }  
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+              alert("Error al enviar intente nuevamente gracias");
+            }
+           });
+       });
+   </script>
+<div class="container">
+    <form method="POST" action="delete-coment/{{object.id}}/{{object.documento.id}}" role="form" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" >
+        {% csrf_token %}
+            Esta seguro de eliminar la el comentario? <strong>{{object.Descripcion}} </strong>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">Confirmar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </div>
+      </form>
+</div>

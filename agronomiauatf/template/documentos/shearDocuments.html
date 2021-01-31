@@ -1,0 +1,48 @@
+<script type="text/javascript">
+    $(document).ready(Sheart);
+        function Sheart(){ 
+          var tbuscar=$("#search-input").attr('autocomplete','off');
+          tbuscar.keypress(buscarProducto);
+      }
+     function buscarProducto(){
+        $.ajax({
+            type:'GET',
+            url:'/BuscarDocumento_view/',
+            data:$("#search-input").serialize(),
+            success:resultado,
+            error:errores
+        });
+    }
+    $("#Tipo").on("submit",function(e){
+            e.preventDefault();
+              $.ajax({
+                  type:"POST",
+                  url:"/BuscarDocumento_view/",
+                  data:$("#search-input").serialize(),
+                  success:resultado,
+                  error:errores
+              });
+          });
+    function resultado(data){
+        $("#pro").fadeIn("slow");
+        console.log(data);
+        $("#pro").html(data);
+    }
+    function errores(){
+        console.log("Error");
+    }
+    </script>
+<div class="table-responsive">
+    <div class="input-group">
+        <div class="form-outline">
+          <form id="Tipo" method="post">
+            <input id="search-input" name="name_documents" type="search" id="form1" class="form-control" />
+                <label class="form-label" for="form1">Buscar documento</label>
+            </div>
+            <!-- <button id="search-button" type="button" class="btn btn-primary">
+                <i class="fas fa-search"></i>
+            </button> -->
+          </form>
+      </div>
+    <div id="pro"></div>
+</div>

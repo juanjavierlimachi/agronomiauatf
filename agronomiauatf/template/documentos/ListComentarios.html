@@ -17,10 +17,18 @@
 						<td>{{i.Descripcion}}</td>
 						<td>{{i.Fecha_creacion|date:"l d M Y"}}</td>
 						
-						<td>
-							<button href="#" class="btn btn-success btn-sm" onclick="getUrl('edit-coment/{{i.id}}','Editar Comentorio');" title="Opciones" data-toggle="modal" data-target="#staticBackdrop">Editar</button>
-							<button href="#" class="btn btn-danger btn-sm" onclick="getUrl('delete-coment/{{i.id}}','Eliminar Comentario');" title="Opciones" data-toggle="modal" data-target="#staticBackdrop">Eliminar</button>
-						</td>
+						
+						{% if  i.Usuario.id == request.user.id %}
+							<td>
+								<button href="#" class="btn btn-success btn-sm" onclick="getUrl('edit-coment/{{i.id}}','Editar Comentorio');" title="Opciones" data-toggle="modal" data-target="#staticBackdrop">Editar</button>
+								<button href="#" class="btn btn-danger btn-sm" onclick="getUrl('delete-coment/{{i.id}}','Eliminar Comentario');" title="Opciones" data-toggle="modal" data-target="#staticBackdrop">Eliminar</button>
+							</td>
+						{% else %}
+							<td>
+
+							</td>	
+						{% endif %}
+							
 					</tr>
 					{% endif %}
 				{% empty %}

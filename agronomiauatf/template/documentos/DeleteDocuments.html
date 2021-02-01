@@ -26,7 +26,7 @@
 <div class="container">
     <form method="POST" action="delete-documents/{{object.pk}}" role="form" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" >
         {% csrf_token %}
-            Esta seguro de eliminar el cosumento? <strong>{{object.Titulo}} </strong>
+            Esta seguro de eliminar el documento? <strong>{{object.Titulo}} </strong>
         <div class="modal-footer">
             <button type="submit" class="btn btn-danger">Confirmar</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

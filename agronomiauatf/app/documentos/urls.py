@@ -21,5 +21,6 @@ urlpatterns = [
     path('comentsFile/<int:id_document>', views.CreateComents, name='new-coments'),
     path('list-comentarios/<int:id_document>', views.ListComentarios.as_view(), name='list-comentarios'),
     path('delete-coment/<int:pk>/<int:id_document>', views.ComentarDeleteView.as_view(), name='delete-coment'),
+    path('edit-coment/<int:id_coment>/<int:id_document>', views.editComent, name='edit-coment'),
     #path('edit-shear/<int:pk>/<int:id_document>', views.CompartirUpdateView.as_view(), name=''),
 ]

@@ -1,6 +1,6 @@
 {% load bootstrap4 %}
 <script type="text/javascript">
- $('#demo-form2').submit(function(e){
+ $('#demo-form3').submit(function(e){
         e.preventDefault();
         var datos=new FormData(this);
         $.ajax({
@@ -14,7 +14,7 @@
                     $(".toast .alert-success").html("Los datos se registraron correctamente!");
                     $('.toast').toast({delay: 3000});
                     $('.toast').toast('show');
-                    callData('/list-documents');
+                    callData('/detail-documents/'+resp);
                     $(".modal .close").click();
                 }
                 else{
@@ -27,7 +27,7 @@
         });
     });
 </script>
- <form method="POST" action="{% url 'documents' %}" role="form" id="demo-form2" data-parsley-validate enctype="multipart/form-data" class="form-horizontal form-label-left" >
+ <form method="POST" action="{% url 'documents' %}" role="form" id="demo-form3" data-parsley-validate enctype="multipart/form-data" class="form-horizontal form-label-left" >
     {% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}

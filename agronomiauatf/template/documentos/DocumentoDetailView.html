@@ -42,8 +42,7 @@
 		  <div class="col-md-8">
 			<div class="card-body">
 			  <h5 class="card-title">{{object.Titulo|upper}}</h5>
-				<p class="card-text"><strong>REGISTRADO POR:</strong> {{object.Usuario.get_full_name|title}}<br>
-					<strong>CATEGORIA:</strong> {{object.Categoria|title}}<br>
+					<strong>CATEGORIA:</strong> {{object.Categoria|title}}
 				</p>
 				<p class="card-text">
 					<small class="text-muted">
@@ -55,7 +54,8 @@
 						 {% else %}
 						 	Público
 						{% endif %}
-						<br>Cantidad de Descargas: <span id="des">{{object.Descargas}}</span>
+						<br><strong>Cantidad de Descargas:</strong> <span id="des">{{object.Descargas}}</span>
+						<br><strong>Registrado por:</strong> {{object.Usuario.get_full_name|title}}
 					</small>
 				</p>
 			</div>

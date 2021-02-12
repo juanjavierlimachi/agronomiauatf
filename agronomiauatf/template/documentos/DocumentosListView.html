@@ -10,6 +10,19 @@
             Buscar
         </span>
   </button>
+  <form role="form" id="demo-form2" method="get" data-parsley-validate class="form-horizontal form-label-left">
+    <select name="stock" id="stock_id" class="form-control" required>
+        <option value="0">Selecione una Categoria</option>
+        {% for i in categorias %}
+            <option value="{{i.id}}">{{i.Nombre_categoria}}</option>
+        {% empty %}
+            <option value="#">No hay registros</option>
+        {% endfor %}
+    </select>
+    <!-- <button class="btn btn-warning" type="button" href="#" onclick="ImprimirProducto()"><span class="fa fa-print">
+  			Imprimir información
+  		</span></button> -->
+    </form>
 	<h5 colspan="6" align="center"><strong>LISTA DE DOCUMENTOS REGISTRADOS EN EL SISTEMA</strong></h5>
     <table class="display dataTable table table-hover table-responsive table-sm size-text" id="example">
         <thead  class="success">

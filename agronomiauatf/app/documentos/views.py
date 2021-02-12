@@ -57,6 +57,12 @@ class DocumentosListView(ListView):
     template_name = "documentos/DocumentosListView.html"
     #paginate_by = 10
     #context_object_name = 'countries'
+    def get(self, request, *args, **kwargs):
+        self.dic = {
+            'object_list':self.model.objects.all().order_by('-id'),
+            'categorias':Categoria.objects.all().order_by('-id')
+        }
+        return render(request,self.template_name, self.dic)
 
 
 def CreateDocumento(request):
@@ -141,10 +147,18 @@ def CountDoumload(request, pk):
     get_data.save()
     return HttpResponse(get_data.Descargas)
 
+def getDocumento(id_documento):
+    dato = Documento.objects.get(id = int(id_documento))
+    return dato
+
 from smtplib import SMTP
 from django.core.mail import EmailMessage
 from django.conf import settings
+from django.template.loader import render_to_string
+from datetime import datetime, date, time, timedelta
+
 def sharedFile(request, pk):
+    
     Usuario=Compartir(Usuario=request.user)
     if request.method == 'POST':
         forms=CompartirForm(request.POST,instance=Usuario)
@@ -154,19 +168,25 @@ def sharedFile(request, pk):
             datos.Correo_Destino = request.POST['Correo_Destino']
             datos.documento_id = int(pk)
             
+            body = render_to_string('documentos/dato_compartido.html',{
+                'documento':getDocumento(pk),
+                'date_today':datetime.now(),
+                'usuario':User.objects.get(id=int(request.user.id))
+                },
+            )
             #a  = request.FILES["Archivo"]
-            
-            ''' email = EmailMessage(
-            request.POST['Asunto'],
-            request.POST['Descripcion'],
-            settings.EMAIL_HOST_USER,
-            [request.POST['Correo_Destino']],
-            ) '''
+            email_message = EmailMessage(
+                subject = f'Documento Compartido {pk}',
+                body = body,
+                from_email = settings.EMAIL_HOST_USER,
+                to = [request.POST['Correo_Destino']]
+            )
             #email.attach(a.name, a.read(), a.content_type)
             #a.close()
-            ''' email.send() '''
+            email_message.content_subtype = 'html'
+            email_message.send()
             datos.save()
-            
+
             return HttpResponse("200")
     else:
         forms=CompartirForm(instance=Usuario)
@@ -226,3 +246,13 @@ class ComentarDeleteView(DeleteView):
         get_data.estado = False 
         get_data.save()
         return HttpResponse('200')
+    
+def editComent(request, id_coment, id_document):
+    dato = Comentar.objects.get(id=int(id_coment))
+    if request.method == 'POST':
+        forms = ComentForm(request.POST, instance=dato)
+        if forms.is_valid():
+            forms.save()
+            return HttpResponse('200')
+    forms = ComentForm(instance=dato)
+    return render(request, 'documentos/editComent.html', {'form': forms,'dato':dato})

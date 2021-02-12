@@ -42,17 +42,21 @@
                     <a href="" onclick="callData('{% url 'users' %}')">Usuarios</a>
                 </li>
                 <li>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Seguridad</a>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Reportes</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         <li>
-                            <a href="#">Page 1</a>
+                            <a href="#">Rango de Fechas</a>
+                        </li>
+                        
+                        {% if request.user.is_superuser %}
+                        <li>
+                            <a href="#">Generar copia de la DB</a>
                         </li>
                         <li>
-                            <a href="#">Page 2</a>
+                            <a href="#">Subir Copia de la DB</a>
                         </li>
-                        <li>
-                            <a href="#">Page 3</a>
-                        </li>
+                        {% endif %}
+                            
                     </ul>
                 </li>
                 <li>

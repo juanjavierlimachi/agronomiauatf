@@ -50,7 +50,7 @@ class AllGetUsers(View):
     def get_queryset(self):
         #si quiero enviar otra consulta
         dic = {
-            'users':self.model.objects.all(),
+            'users':self.model.objects.all().order_by('-id'),
             #'usuarios':self.model.objects.all().count()
         }
         return dic

@@ -1,0 +1,37 @@
+<h5 colspan="4" align="center"><strong>ESTE DOCUMENTO SE COMPARTIO CON LOS SIG. CORREOS</strong></h5>
+    <table class="display dataTable table table-hover table-responsive table-sm size-text" id="table-ingresos">
+        <thead  class="success">
+            <th style="width: 3%;">Nro</th>
+            <th>ASUNTO</th>
+            <th>USUARIO</th>
+            <th>EMAIL</th>
+            <th>FECHA</th>
+            <th></th>
+        </thead>
+        <tbody>
+            {% for i in object_list %}
+                {% if i.estado %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.Asunto}}</td>
+                    <td>{{i.Usuario.get_full_name|title}}</td>
+                    <td>{{i.Correo_Destino}}</td>
+                    <td>{{i.Fecha_creacion|date:"l d M Y"}}</td>
+                    
+                    {% if i.Usuario.id == request.user.id %}
+                        <td>
+                            <button href="#" class="btn btn-danger btn-sm" onclick="getUrl('edit-shear/{{i.id}}/{{i.documento.id}}','Eliminar Compartido');" title="Opciones" data-toggle="modal" data-target="#staticBackdrop">Editar</button>
+                        </td>
+                    {% else %}
+                        
+                    {% endif %}
+                        
+                    
+                </tr>
+                {% endif %}
+            {% empty %}
+
+                <tr> <td colspan="6" align="center"><strong>No se encontró registros</strong></td> </tr>
+            {% endfor %}
+        </tbody>
+    </table>

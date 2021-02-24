@@ -8,11 +8,11 @@
             data: $(this).serialize(),
             success: function(resp){
                 if(resp == '200'){
-                    $(".toast .alert-success").html("Los datos se registraron correctamente!");
+                    $(".toast .alert-success").html("Los datos se actualizaron correctamente!");
                     $('.toast').toast({delay: 3000});
                     $('.toast').toast('show');
-                    callData('/list-category');
-                    $(".modal .close").click();
+                    callData('/detail-documents/{{dato.documento.id}}');//llama a este funcion
+                    $(".modal .close").click();//cierra la ventana modal
                 }
                 else{
                     $(".modal-body").html(resp);
@@ -24,13 +24,12 @@
         });
     });
  </script>
- <form method="POST" action="{% url 'category' %}" role="form" class="form-horizontal" id="demo-form2" data-parsley-validate >{% csrf_token %}
+ <form method="POST" action="edit-coment/{{dato.id}}/{{dato.documento.id}}" role="form" class="form-horizontal" id="demo-form2" data-parsley-validate >{% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
        <div class="modal-footer">
-           <button type="submit" class="btn btn-primary">Registrar</button>
+           <button type="submit" class="btn btn-primary">Editar</button>
            <button type="button" class="btn btn-secondary btn-ms" data-dismiss="modal">Cancelar</button>
-           <button type="reset" class="btn btn-warning btn-ms">Borrar</button>
        </div>
    {% endbuttons %}
   </form>

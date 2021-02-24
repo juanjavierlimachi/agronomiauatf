@@ -11,7 +11,7 @@
                     $(".toast .alert-success").html("Los datos se registraron correctamente!");
                     $('.toast').toast({delay: 3000});
                     $('.toast').toast('show');
-                    callData('/list-category');
+                    callData('/detail-documents/{{pk}}');
                     $(".modal .close").click();
                 }
                 else{
@@ -24,7 +24,7 @@
         });
     });
  </script>
- <form method="POST" action="{% url 'category' %}" role="form" class="form-horizontal" id="demo-form2" data-parsley-validate >{% csrf_token %}
+ <form method="POST" action="sharedFile/{{pk}}" role="form" class="form-horizontal" id="demo-form2" data-parsley-validate >{% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
        <div class="modal-footer">

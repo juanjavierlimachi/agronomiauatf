@@ -125,3 +125,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL  = '/static/'
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'agronomiauatf/media')
 MEDIA_URL   = "/media/"
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'agrosis300@gmail.com'
+#EMAIL_HOST_PASSWORD = config('USER_MAIL_PASSWORD')
+EMAIL_HOST_PASSWORD = 'agronomia123'
+EMAIL_USE_TLS = True

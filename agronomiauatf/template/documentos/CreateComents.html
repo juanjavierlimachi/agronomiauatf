@@ -11,8 +11,8 @@
                     $(".toast .alert-success").html("Los datos se registraron correctamente!");
                     $('.toast').toast({delay: 3000});
                     $('.toast').toast('show');
-                    callData('/list-category');
-                    $(".modal .close").click();
+                    callData('/detail-documents/{{id_document}}');//llama a este funcion
+                    $(".modal .close").click();//cierra la ventana modal
                 }
                 else{
                     $(".modal-body").html(resp);
@@ -24,7 +24,7 @@
         });
     });
  </script>
- <form method="POST" action="{% url 'category' %}" role="form" class="form-horizontal" id="demo-form2" data-parsley-validate >{% csrf_token %}
+ <form method="POST" action="comentsFile/{{id_document}}" role="form" class="form-horizontal" id="demo-form2" data-parsley-validate >{% csrf_token %}
     {% bootstrap_form form %}
     {% buttons %}
        <div class="modal-footer">

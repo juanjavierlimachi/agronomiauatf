@@ -1,0 +1,121 @@
+
+<div class="table-responsive">
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#staticBackdrop" onclick="getUrl('create-documents/','REGISTRAR DOCUMENTO')">
+          <span class="">
+  			Registrar Archivo
+          </span>
+    </button>
+    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#staticBackdrop" onclick="getUrl('{% url 'shearDocuments' %}','BUSCAR DOCUMENTOS')">
+        <span class="">
+            Buscar
+        </span>
+  </button>
+  <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#staticBackdrop" onclick="getUrl('{% url 'rango_fechas' %}','GENERAR REPORTE')">
+    <span class="">
+        Reporte
+    </span>
+</button>
+  <form role="form" id="demo-form2" method="get" data-parsley-validate 
+  class="form-horizontal form-label-left" style="max-width: 500px; float: right;height: 30px; margin-right: 50px;">
+    <select name="stock" id="stock_id" class="form-control" required style="height: 40px; width: 64%;">
+        <option value="0">Selecione una Categoria</option>
+        {% for i in categorias %}
+            <option value="{{i.id}}">{{i.Nombre_categoria}}</option>
+        {% empty %}
+            <option value="#">No hay registros</option>
+        {% endfor %}
+    </select>
+        <button type="button" class="btn btn-warning btn-sm" onclick="ImprimirDocument()" style="float: right;margin-top: -40px;">
+            <span class="">
+                Imprimir
+            </span>
+        </button>
+    </form>
+	<h5 colspan="6" align="center"><strong>LISTA DE DOCUMENTOS REGISTRADOS EN EL SISTEMA</strong></h5>
+    <table class="display dataTable table table-hover table-responsive table-sm size-text" id="example">
+        <thead  class="success">
+            <th style="width: 3%;">Nro</th>
+            <th>TÍTULO</th>
+            <th>CATEGORIA</th>
+            <th>USUARIO</th>
+            <th>FECHA DE REGISTRO</th>
+            <th></th>
+        </thead>
+        <tbody>
+            {% for i in object_list %}
+                {% if i.estado %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{i.Titulo}}</td>
+                        <td>{{i.Categoria|title}}</td>
+                        <td>{{i.Usuario.get_full_name|title}}</td>
+                        <td>{{i.Fecha_creacion|date:"l d M Y"}}</td>
+                        <td>
+                            <button href="#" class="btn btn-info btn-sm" onclick="getUrls('detail-documents/{{i.id}}');" title="Opciones">Detalle</button>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% empty %}
+                    <tr> <td colspan="6" align="center"><strong>No se encontró registros</strong></td> </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</div>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"> -->
+<script type="text/javascript">
+	function getUrl(route,title){
+		$(".modal .modal-title").text(title);
+        $.ajax({
+          type:'GET',
+          url:route,
+          success:function(resp){
+            $(".modal .modal-body").html(resp);
+          }
+        });
+    }
+    function getUrls(route){
+        $.ajax({
+          type:'GET',
+          url:route,
+          success:function(resp){
+            $(".x_content").html(resp);
+          }
+        });
+    }
+    $(document).ready(function(){
+        $('.table-responsive #example').DataTable();
+        $(".pagination .step-links a").click(function(e){
+            e.preventDefault();
+            $.ajax({
+                type:'GET',
+                url:$('.pagination .step-links a').attr('href'),
+                success:function(resp){
+                    $(".x_content").html(resp);
+                }
+             });
+        })
+    });
+    function Espera(){
+		$(".modal-body").html('<img src="/static/img/log.gif" id="icono"></img><br>Procesando...');
+    }
+    $('#stock_id').on('change',stock);
+    function stock(){
+        var id_categoria = $(this).val();
+        $.ajax({
+            type: 'GET',
+            url:"/select_documents/"+id_categoria,
+            beforeSend:Espera,
+            success: function(data){
+                console.log(data);
+                $('.table-responsive #example').html(data);
+            }
+        });
+    }
+    function ImprimirDocument(){
+        var id = $("#stock_id").val();
+        window.open("/print_doc_categorias/"+id);
+    }
+</script>

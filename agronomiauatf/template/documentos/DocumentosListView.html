@@ -10,8 +10,14 @@
             Buscar
         </span>
   </button>
-  <form role="form" id="demo-form2" method="get" data-parsley-validate class="form-horizontal form-label-left">
-    <select name="stock" id="stock_id" class="form-control" required>
+  <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#staticBackdrop" onclick="getUrl('{% url 'rango_fechas' %}','GENERAR REPORTE')">
+    <span class="">
+        Reporte
+    </span>
+</button>
+  <form role="form" id="demo-form2" method="get" data-parsley-validate 
+  class="form-horizontal form-label-left" style="max-width: 500px; float: right;height: 30px; margin-right: 50px;">
+    <select name="stock" id="stock_id" class="form-control" required style="height: 40px; width: 64%;">
         <option value="0">Selecione una Categoria</option>
         {% for i in categorias %}
             <option value="{{i.id}}">{{i.Nombre_categoria}}</option>
@@ -19,9 +25,11 @@
             <option value="#">No hay registros</option>
         {% endfor %}
     </select>
-    <!-- <button class="btn btn-warning" type="button" href="#" onclick="ImprimirProducto()"><span class="fa fa-print">
-  			Imprimir información
-  		</span></button> -->
+        <button type="button" class="btn btn-warning btn-sm" onclick="ImprimirDocument()" style="float: right;margin-top: -40px;">
+            <span class="">
+                Imprimir
+            </span>
+        </button>
     </form>
 	<h5 colspan="6" align="center"><strong>LISTA DE DOCUMENTOS REGISTRADOS EN EL SISTEMA</strong></h5>
     <table class="display dataTable table table-hover table-responsive table-sm size-text" id="example">
@@ -90,4 +98,24 @@
              });
         })
     });
+    function Espera(){
+		$(".modal-body").html('<img src="/static/img/log.gif" id="icono"></img><br>Procesando...');
+    }
+    $('#stock_id').on('change',stock);
+    function stock(){
+        var id_categoria = $(this).val();
+        $.ajax({
+            type: 'GET',
+            url:"/select_documents/"+id_categoria,
+            beforeSend:Espera,
+            success: function(data){
+                console.log(data);
+                $('.table-responsive #example').html(data);
+            }
+        });
+    }
+    function ImprimirDocument(){
+        var id = $("#stock_id").val();
+        window.open("/print_doc_categorias/"+id);
+    }
 </script>

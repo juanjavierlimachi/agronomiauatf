@@ -1,0 +1,25 @@
+<h5 colspan="4" align="center"><strong>LISTA DE DOCUMENTOS REGISTRADOS EN EL SISTEMA</strong></h5>
+<table class="display dataTable table table-hover table-responsive table-sm size-text" id="table-ingresos">
+    <thead  class="success">
+        <th style="width: 3%;">Nro</th>
+        <th>TÍTULO</th>
+        <th>CATEGORIA</th>
+        <th>USUARIO</th>
+        <th>FECHA DE REGISTRO</th>
+    </thead>
+    <tbody>
+        {% for i in documentos %}
+            {% if i.estado %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.Titulo}}</td>
+                    <td>{{i.Categoria|title}}</td>
+                    <td>{{i.Usuario.get_full_name|title}}</td>
+                    <td>{{i.Fecha_creacion|date:"l d M Y"}}</td>
+                </tr>
+            {% endif %}
+        {% empty %}
+                <tr> <td colspan="6" align="center"><strong>No se encontró registros</strong></td> </tr>
+        {% endfor %}
+    </tbody>
+</table>

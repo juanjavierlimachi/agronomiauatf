@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{% static 'css/toast.css' %}">
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
 </head>
 <body>
     <div class="wrapper">
@@ -44,9 +45,6 @@
                 <li>
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Reportes</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <li>
-                            <a href="#">Rango de Fechas</a>
-                        </li>
                         
                         {% if request.user.is_superuser %}
                         <li>
@@ -127,6 +125,7 @@
     <!--AlguarJS--->
     <script src="{% static 'js/angular.min.js' %}"></script>
     <script src="{% static 'js/dashboard.component.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {

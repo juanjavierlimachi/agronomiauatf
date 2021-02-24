@@ -256,3 +256,58 @@ def editComent(request, id_coment, id_document):
             return HttpResponse('200')
     forms = ComentForm(instance=dato)
     return render(request, 'documentos/editComent.html', {'form': forms,'dato':dato})
+
+
+def selectDocument(request, id_categoria):
+    documento = Documento.objects.filter(Categoria_id=int(id_categoria))
+    return render(request,'documentos/selectDocument.html',{'documentos':documento})
+
+def printDcocumentos(request, id_categoria):
+    documento = Documento.objects.filter(Categoria_id=int(id_categoria))
+    return render(request,'documentos/printDcocumentos.html',{'documentos':documento})
+
+def rangoFechas(request):
+    if request.method == 'POST':
+        pass
+    dic = {
+        'users':User.objects.filter(is_superuser = True, is_staff = True)
+    }
+    return render(request,'documentos/rangoFechas.html',dic)
+
+def reportGeneral(request, clients_id, fecha_inicio, fecha_fin):
+    fecha_inicio = datetime.strptime(fecha_inicio,"%d-%m-%Y")
+    fecha_fin = datetime.strptime(fecha_fin,"%d-%m-%Y")
+    #fecha_fin = fecha_fin + timedelta(days=1)
+    if str(fecha_inicio) > str(fecha_fin):
+        return HttpResponse("Error: La Fecha Inicio No pueder ser Mayor a la Fecha Final.")
+    if int(clients_id) == 0:# if you don't choose any customer
+        user = 0
+        documentos = Documento.objects.filter(Fecha_creacion__range=(fecha_inicio,fecha_fin),estado = True).order_by('Fecha_creacion')
+    else:
+        user = User.objects.get(id=int(clients_id))
+        documentos = Documento.objects.filter(Fecha_creacion__range=(fecha_inicio,fecha_fin),estado = True, Usuario_id=int(clients_id)).order_by('Fecha_creacion')
+    dic={
+        'user':user,
+        'documentos':documentos
+    }
+    print(dic)
+    return render(request, 'documentos/selectDocument.html',dic)
+
+def printReportGeneral(request, clients_id, fecha_inicio, fecha_fin):
+    fecha_inicio = datetime.strptime(fecha_inicio,"%d-%m-%Y")
+    fecha_fin = datetime.strptime(fecha_fin,"%d-%m-%Y")
+    #fecha_fin = fecha_fin + timedelta(days=1)
+    if str(fecha_inicio) > str(fecha_fin):
+        return HttpResponse("Error: La Fecha Inicio No pueder ser Mayor a la Fecha Final.")
+    if int(clients_id) == 0:# if you don't choose any customer
+        user = 0
+        documentos = Documento.objects.filter(Fecha_creacion__range=(fecha_inicio,fecha_fin),estado = True).order_by('Fecha_creacion')
+    else:
+        user = User.objects.get(id=int(clients_id))
+        documentos = Documento.objects.filter(Fecha_creacion__range=(fecha_inicio,fecha_fin),estado = True, Usuario_id=int(clients_id)).order_by('Fecha_creacion')
+    dic={
+        'user':user,
+        'documentos':documentos
+    }
+    print(dic)
+    return render(request, 'documentos/printReportGeneral.html',dic)

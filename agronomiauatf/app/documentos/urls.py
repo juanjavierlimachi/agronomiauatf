@@ -1,5 +1,6 @@
 
 from django.urls import path
+from django.conf.urls import url
 from agronomiauatf.app.documentos import views
 urlpatterns = [
     path('create-category', views.CreateCategory, name='category'),
@@ -23,4 +24,11 @@ urlpatterns = [
     path('delete-coment/<int:pk>/<int:id_document>', views.ComentarDeleteView.as_view(), name='delete-coment'),
     path('edit-coment/<int:id_coment>/<int:id_document>', views.editComent, name='edit-coment'),
     #path('edit-shear/<int:pk>/<int:id_document>', views.CompartirUpdateView.as_view(), name=''),
+    path('select_documents/<int:id_categoria>', views.selectDocument, name='select_documents'),
+    path('print_doc_categorias/<int:id_categoria>', views.printDcocumentos, name='print_doc_categorias'),
+    
+    path('rango_fechas/', views.rangoFechas, name='rango_fechas'),
+    
+    url(r'^report-general/(?P<clients_id>\d+)/(?P<fecha_inicio>[^/]+)/(?P<fecha_fin>[^/]+)/$',views.reportGeneral),
+    url(r'^print-report-general/(?P<clients_id>\d+)/(?P<fecha_inicio>[^/]+)/(?P<fecha_fin>[^/]+)/$',views.printReportGeneral),
 ]

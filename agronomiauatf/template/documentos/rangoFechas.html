@@ -1,0 +1,110 @@
+
+<form method="POST"><br>{% csrf_token %}
+	<div class="form-group">
+		<label for="id_desde">Desde:</label>
+		<input type="text" class="form-control" autocomplete="off" name="inicio" id="ini" placeholder="DD/MM/AA" required/>
+	</div>
+	<div class="form-group">
+		<label for="id_hasta">Hasta:</label>
+		<input type="text" class="form-control" autocomplete="off" name="final" id="fin" placeholder="DD/MM/AA" required/>
+	</div>	
+	<div class="form-group">
+		<select name="cliente" id="cliente" class=" form-control" data-size="5" data-width="fit">
+			<option value="0">Elegir Usuario</option>
+			{% for c in users %}
+			<option value="{{c.id}}">{{c.get_full_name|title}}</option>
+			{% endfor %}
+		</select>
+	</div>	
+	<div class="form-group">
+		<a href="#" button type="button" onclick="ReporteGeneral()"
+			class="btn btn-success btn-ms">
+			<span class="">Consultar</span>
+		</a>
+		<a href="#" button type="button" onclick="printReportGeneral()"class="btn btn-warning btn-ms">Imprimir</a>
+		<button type="button" class="btn btn-secondary btn-ms" data-dismiss="modal">Cancelar</button>
+	</div>	
+</form>
+<script>
+	function printReportGeneral(){
+		var get_fecha = FechaValidar($("#ini").val(), $("#fin").val(), $("#cliente").val());
+		if(get_fecha.length > 0)
+			window.open("print-report-general/"+get_fecha[0]+"/"+get_fecha[1]+"/"+get_fecha[2]);
+		else
+			return false;
+	}
+	function ReporteGeneral(){
+		var get_fecha = FechaValidar($("#ini").val(), $("#fin").val(), $("#cliente").val());
+		if(get_fecha.length > 0){
+			$.ajax({
+				type:'GET',
+				url:'report-general/'+get_fecha[0]+'/'+get_fecha[1]+'/'+get_fecha[2]+'/',
+				beforeSend:Espera,
+				success:function(resp){
+					$('.table-responsive #example').html(resp);
+					$(".modal .close").click();
+				}
+        	});
+		}
+		else{
+			return false;
+		}			
+	}
+	function FechaValidar(f_i, f_f, user){
+		var inicio = f_i;
+		var fin = f_f;
+		var clients_id = user;
+		var get_fecha = [];
+		if(inicio =='' || fin =='' || !isNaN(inicio) || !isNaN(fin) ){
+			alert("Por favor Ingrese la fecha correctamente.");
+			$("#ini").focus();
+			return get_fecha;
+		}
+		else{
+			let fecha_inicio = inicio.split('/');//convert it to an array
+			let a = fecha_inicio[0]+"-"+fecha_inicio[1]+"-"+fecha_inicio[2];
+			let fecha_final = fin.split('/');
+			let b = fecha_final[0]+"-"+fecha_final[1]+"-"+fecha_final[2];
+			get_fecha.push(clients_id, a, b);
+			return get_fecha;
+		}
+	}
+	function Espera(){
+            $("#report").html('<div id="icono"><img src="/static/img/log.gif">Espere por favor, Opteniendo datos</img></div>');
+    }
+	$( function() {
+        console.log("bien");
+		$( "#ini" ).datepicker({
+			prevText: '<Ant',
+			nextText: 'Sig>',
+			currentText: 'Hoy',
+			monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+			dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+			dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+			dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+			weekHeader: 'Sm',
+			dateFormat: 'dd/mm/yy',
+			firstDay: 1,
+			isRTL: false,
+			showMonthAfterYear: false,
+			yearSuffix: ''
+		});
+		$( "#fin" ).datepicker({
+			prevText: '<Ant',
+			nextText: 'Sig>',
+			currentText: 'Hoy',
+			monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+			dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+			dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+			dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+			weekHeader: 'Sm',
+			dateFormat: 'dd/mm/yy',
+			firstDay: 1,
+			isRTL: false,
+			showMonthAfterYear: false,
+			yearSuffix: ''
+		});
+	} );
+</script>

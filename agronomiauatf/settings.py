@@ -25,7 +25,7 @@ SECRET_KEY = ')x(h2dlxeki-dyu^%_n5c_=#ka8l)a6!ng!=9hndc4xa@k(+7s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',#libreria para integrar bootstrap  django-bootstrap4==2.2.0
     'agronomiauatf.app.inicio',
+    'agronomiauatf.app.documentos',
 ]
 
 MIDDLEWARE = [
@@ -105,9 +106,9 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-BO'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/La_Paz'
 
 USE_I18N = True
 

@@ -7,6 +7,14 @@ from django.contrib import messages
 from django import forms
 from django.urls import reverse, reverse_lazy
 from django.db.models import Q
+import calendar
+from datetime import datetime, date, time, timedelta
+#librerias para reportes
+from io import StringIO
+import os
+import io
+from xhtml2pdf import pisa
+from django.template.loader import render_to_string
 # Create your views here.
 
 class ListarCategorias(ListView):
@@ -264,7 +272,17 @@ def selectDocument(request, id_categoria):
 
 def printDcocumentos(request, id_categoria):
     documento = Documento.objects.filter(Categoria_id=int(id_categoria))
-    return render(request,'documentos/printDcocumentos.html',{'documentos':documento})
+    try:
+        Categoria.objects.get(id = int(id_categoria))
+    except Exception as e:
+        categoria = False
+    html=render_to_string('documentos/printDcocumentos.html',
+        {
+            'documentos':documento,
+            'categoria': categoria
+        })
+    return generar_pdf(html)
+
 
 def rangoFechas(request):
     if request.method == 'POST':
@@ -290,8 +308,8 @@ def reportGeneral(request, clients_id, fecha_inicio, fecha_fin):
         'user':user,
         'documentos':documentos
     }
-    print(dic)
-    return render(request, 'documentos/selectDocument.html',dic)
+    return render(request,'documentos/selectDocument.html',dic)
+
 
 def printReportGeneral(request, clients_id, fecha_inicio, fecha_fin):
     fecha_inicio = datetime.strptime(fecha_inicio,"%d-%m-%Y")
@@ -300,14 +318,25 @@ def printReportGeneral(request, clients_id, fecha_inicio, fecha_fin):
     if str(fecha_inicio) > str(fecha_fin):
         return HttpResponse("Error: La Fecha Inicio No pueder ser Mayor a la Fecha Final.")
     if int(clients_id) == 0:# if you don't choose any customer
-        user = 0
+        user = False
         documentos = Documento.objects.filter(Fecha_creacion__range=(fecha_inicio,fecha_fin),estado = True).order_by('Fecha_creacion')
     else:
         user = User.objects.get(id=int(clients_id))
+        print(user)
         documentos = Documento.objects.filter(Fecha_creacion__range=(fecha_inicio,fecha_fin),estado = True, Usuario_id=int(clients_id)).order_by('Fecha_creacion')
     dic={
         'user':user,
-        'documentos':documentos
+
+        'documentos':documentos,
+        'fecha_inicio':fecha_inicio.date(),
+        'fecha_fin':fecha_fin.date()
     }
-    print(dic)
-    return render(request, 'documentos/printReportGeneral.html',dic)
+    html=render_to_string('documentos/printReportGeneral.html',dic)
+    return generar_pdf(html)
+
+def generar_pdf(html):
+    resultado=io.BytesIO()
+    pdf=pisa.pisaDocument(io.BytesIO(html.encode("UTF:8")),resultado)
+    if not pdf.err:
+        return HttpResponse(resultado.getvalue(),'application/pdf')
+    return HttpResponse("Error al generar el reporte")

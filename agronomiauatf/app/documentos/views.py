@@ -1,3 +1,4 @@
+#encoding:utf-8
 from django.shortcuts import render, redirect,HttpResponse,HttpResponseRedirect
 from django.views.generic import View, FormView, DetailView, ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.forms import User
@@ -15,6 +16,11 @@ import os
 import io
 from xhtml2pdf import pisa
 from django.template.loader import render_to_string
+#Libraries for creating backups
+import time
+import os
+import MySQLdb
+import shutil
 # Create your views here.
 
 class ListarCategorias(ListView):
@@ -273,9 +279,10 @@ def selectDocument(request, id_categoria):
 def printDcocumentos(request, id_categoria):
     documento = Documento.objects.filter(Categoria_id=int(id_categoria))
     try:
-        Categoria.objects.get(id = int(id_categoria))
+        categoria = Categoria.objects.get(id = int(id_categoria))
     except Exception as e:
         categoria = False
+        documento = Documento.objects.all()
     html=render_to_string('documentos/printDcocumentos.html',
         {
             'documentos':documento,
@@ -340,3 +347,37 @@ def generar_pdf(html):
     if not pdf.err:
         return HttpResponse(resultado.getvalue(),'application/pdf')
     return HttpResponse("Error al generar el reporte")
+
+def generateBakup(request):
+    if request.method == 'POST':
+        forms = formDB(request.POST, request.FILES)
+        if forms.is_valid():
+            dato=str(request.FILES['Base_de_datos'])
+            command = "mysql -h localhost  -u root agronomia"+"<"+dato+""
+            #command = command+"<"+str(request.FILES['base'])
+            os.system(command)
+            return HttpResponse("Base de Datos Restaurada Correctamente.")
+        else:
+            return HttpResponse("Error al Interar Restaurar la Base de Datos")
+    forms = formDB()
+    return render(request,'documentos/generateBakup.html',{'forms':forms})
+
+def createBackup(request):
+
+    RUTA_PROYECTO=str(os.path.dirname(os.path.realpath(__file__)))
+    command = "mysqldump -h localhost  -u root agronomia"
+    #fecha = datetime.datetime.time()
+    time=date.today()
+    fecha=time.strftime("%Y-%m-%d")
+# Fichero de salida
+    file = "backup_"+fecha
+    command = command+"> bd_"+file+".sql"
+    os.system(command)
+   #os.path.isdir(os.system(command))
+    #src = 'E:\djang1.11/proyecto/Scripts/postgrado/bd_'+file+'.sql'
+    src = r'C:\Users/jjavier/Desktop/code/django3/Scripts/agronomiauatf/bd_'+file+'.sql'
+    #dst = 'C:\Users/jjavier/Desktop/code/django3/Scripts/agronomiauatf/media/bd_'+file+'.sql'
+    dst = r'C:\Users/jjavier/Desktop/code/django3/Scripts/agronomiauatf/agronomiauatf/media/bd_'+file+'.sql'
+    shutil.copy(src, dst)
+    return HttpResponse("Se creo el Respaldo de la Base de Datos Correctamente !!! <a href='/media/bd_"+file+".sql' download='bd_"+file+".sql'>Descargar</a>")
+

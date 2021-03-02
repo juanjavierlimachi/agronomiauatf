@@ -1,4 +1,4 @@
-
+#encoding:utf-8
 from django.urls import path
 from django.conf.urls import url
 from agronomiauatf.app.documentos import views
@@ -31,4 +31,8 @@ urlpatterns = [
     
     url(r'^report-general/(?P<clients_id>\d+)/(?P<fecha_inicio>[^/]+)/(?P<fecha_fin>[^/]+)/$',views.reportGeneral),
     url(r'^print-report-general/(?P<clients_id>\d+)/(?P<fecha_inicio>[^/]+)/(?P<fecha_fin>[^/]+)/$',views.printReportGeneral),
+    #bakup de la DB
+    path('generate_bakup/', views.generateBakup, name='generate_bakup'),
+    
+    path('createBackup/', views.createBackup, name='createBackup'),
 ]

@@ -1,0 +1,62 @@
+{% load bootstrap4 %}
+<script type="text/javascript">
+$('.container #demo-form2').submit(function(e){
+       e.preventDefault();
+       var dato=new FormData(document.getElementById("demo-form2"));
+       console.log(dato);
+       $.ajax({
+           type:'POST',
+           url:'/generate_bakup/',
+           data: dato,
+           contentType: false,
+           processData: false,
+           beforeSend: En_Espera,
+           success:function(resp){
+               $('#respuesta').html(resp);
+           }
+       });
+   });
+function Respaldo(){
+   $.ajax({
+           type:'GET',
+           url:'/createBackup/',
+           beforeSend: En_Espera,
+           success:function(resp){
+                   console.log(resp);
+                   $('#respuesta').html(resp);
+               }
+       });  
+}
+ 
+function En_Espera(){
+     $("#respuesta").html('Procesando, Espere unos segundos. <img src="/static/img/log.gif" id="icono"></img>');
+   }
+</script>
+<style type="text/css">
+  #respuesta a{
+    color: red;
+  }
+</style>
+<div class="container" >
+   <h4 colspan="5" align="center">SEGURIDAD DE LA BASE DE DATOS</h4>
+<form method="POST" role="form" id="demo-form2" enctype="multipart/form-data" data-parsley-validate class="form-horizontal" style="max-width: 50%; margin: auto;" >
+    {% csrf_token %}
+    {% bootstrap_form forms %}
+ 
+   <div class="modal-footer">
+       <button type="submit" class="btn btn-primary" style="margin: auto;float: right;"> Importar una base de datos anterior</button>
+   </div>
+ </form>
+ <br>
+ <form method="GET" role="form" id="demo-form3" data-parsley-validate class="form-horizontal" >
+ {% csrf_token %}
+ 
+   <div class="modal-footer">
+       <a type="#" class="btn btn-warning" onclick="Respaldo()" style="margin: auto;">
+           Crear una copia de seguridad de la base de datos
+       </a>
+   </div>
+ </form>
+ <br>
+ <p id="respuesta"></p>
+</div>

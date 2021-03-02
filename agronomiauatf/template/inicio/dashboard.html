@@ -42,21 +42,11 @@
                 <li>
                     <a href="" onclick="callData('{% url 'users' %}')">Usuarios</a>
                 </li>
+                {% if request.user.is_superuser %}
                 <li>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Reportes</a>
-                    <ul class="collapse list-unstyled" id="pageSubmenu">
-                        
-                        {% if request.user.is_superuser %}
-                        <li>
-                            <a href="#">Generar copia de la DB</a>
-                        </li>
-                        <li>
-                            <a href="#">Subir Copia de la DB</a>
-                        </li>
-                        {% endif %}
-                            
-                    </ul>
+                    <a href="#" onclick="callData('generate_bakup')">Base de Datos</a>
                 </li>
+                {% endif %}
                 <li>
                     <a href="" onclick="callData('{% url 'list-category' %}')">Categorias</a>
                 </li>

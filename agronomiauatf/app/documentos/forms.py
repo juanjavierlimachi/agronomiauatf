@@ -43,3 +43,6 @@ class CompartirForm(forms.ModelForm):
         exclude = ('estado','Usuario','documento','Correo_origen',)
 
         
+class formDB(forms.Form):
+    Base_de_datos = forms.FileField()
+        

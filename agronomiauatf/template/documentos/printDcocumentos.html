@@ -20,11 +20,11 @@ colspan="6" align="center">
         {% for i in documentos %}
             {% if i.estado %}
                 <tr>
-                    <td><br>{{forloop.counter}}</td>
-                    <td><br>{{i.Titulo}}</td>
-                    <td><br>{{i.Categoria|title}}</td>
-                    <td><br>{{i.Usuario.get_full_name|title}}</td>
-                    <td><br>{{i.Fecha_creacion|date:"l d M Y"}}</td>
+                    <td align="center"><br>{{forloop.counter}}</td>
+                    <td align="center"><br>{{i.Titulo}}</td>
+                    <td align="center"><br>{{i.Categoria|title}}</td>
+                    <td align="center"><br>{{i.Usuario.get_full_name|title}}</td>
+                    <td align="center"><br>{{i.Fecha_creacion|date:"l d M Y"}}</td>
                 </tr>
             {% endif %}
         {% empty %}

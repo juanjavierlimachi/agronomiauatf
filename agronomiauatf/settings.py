@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'bootstrap4',#libreria para integrar bootstrap  django-bootstrap4==2.2.0
     'agronomiauatf.app.inicio',
     'agronomiauatf.app.documentos',
+    'import_export',
 ]
 
 MIDDLEWARE = [

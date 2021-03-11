@@ -272,6 +272,17 @@ def editComent(request, id_coment, id_document):
     return render(request, 'documentos/editComent.html', {'form': forms,'dato':dato})
 
 
+def editShear(request, id_share, id_document):
+    dato = Compartir.objects.get(id=int(id_share))
+    if request.method == 'POST':
+        forms = CompartirForm(request.POST, instance=dato)
+        if forms.is_valid():
+            forms.save()
+            return HttpResponse('200')
+    forms = CompartirForm(instance=dato)
+    return render(request, 'documentos/editShear.html', {'form': forms,'dato':dato})
+
+
 def selectDocument(request, id_categoria):
     documento = Documento.objects.filter(Categoria_id=int(id_categoria))
     return render(request,'documentos/selectDocument.html',{'documentos':documento})
@@ -375,9 +386,9 @@ def createBackup(request):
     os.system(command)
    #os.path.isdir(os.system(command))
     #src = 'E:\djang1.11/proyecto/Scripts/postgrado/bd_'+file+'.sql'
-    src = r'C:\Users/jjavier/Desktop/code/django3/Scripts/agronomiauatf/bd_'+file+'.sql'
+    src = r'E:\code/django3/Scripts/agronomiauatf/bd_'+file+'.sql'
     #dst = 'C:\Users/jjavier/Desktop/code/django3/Scripts/agronomiauatf/media/bd_'+file+'.sql'
-    dst = r'C:\Users/jjavier/Desktop/code/django3/Scripts/agronomiauatf/agronomiauatf/media/bd_'+file+'.sql'
+    dst = r'E:\code/django3/Scripts/agronomiauatf/agronomiauatf/media/bd_'+file+'.sql'
     shutil.copy(src, dst)
     return HttpResponse("Se creo el Respaldo de la Base de Datos Correctamente !!! <a href='/media/bd_"+file+".sql' download='bd_"+file+".sql'>Descargar</a>")
 
